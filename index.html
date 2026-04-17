@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>One moment...</title>
+  
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag("js", new Date());
+    gtag("config", "G-XXXXXXXXXX", { send_page_view: false });
+
+    // ADD NEW PRODUCTS HERE — one line per product
+    const routes = {
+      "sudoku1":      { dest: "YOUR_AMAZON_ATTRIBUTION_URL", label: "amazon_sudoku_v1" },
+      "sudoku1_etsy": { dest: "YOUR_ETSY_UTM_URL",           label: "etsy_sudoku_v1"  },
+      "sudoku1_gum":  { dest: "YOUR_GUMROAD_URL",            label: "gumroad_sudoku"  },
+      "default":      { dest: "https://AmitJain48-web.github.io/links/", label: "homepage" }
+    };
+
+    window.addEventListener("DOMContentLoaded", function() {
+      const params  = new URLSearchParams(window.location.search);
+      const product = params.get("product") || "default";
+      const ref     = params.get("ref") || "direct";
+      const route   = routes[product] || routes["default"];
+      document.getElementById("dest").textContent = route.label;
+      gtag("event", "outbound_redirect", {
+        product_code: route.label,
+        traffic_source: ref,
+        event_callback: function() { window.location.replace(route.dest); },
+        event_timeout: 2000
+      });
+    });
+  </script>
+</head>
+<body style="font-family:Arial,sans-serif;text-align:center;padding:80px 20px;background:#f9f9f9;color:#555;">
+  <p>Taking you to <strong id="dest">your destination</strong>...</p>
+  <p style="font-size:12px;">
+    If nothing happens,
+    <a href="https://AmitJain48-web.github.io/links/">click here</a>.
+  </p>
+</body>
+</html>
